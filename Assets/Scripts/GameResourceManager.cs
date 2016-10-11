@@ -21,7 +21,7 @@ namespace AIToolkitDemo
             {
                 return null;
             }
-            return GameObject.Instantiate(_resourceDict[path]);  
+            return GameObject.Instantiate(_resourceDict[path]) as GameObject;  
         }
     }
 }

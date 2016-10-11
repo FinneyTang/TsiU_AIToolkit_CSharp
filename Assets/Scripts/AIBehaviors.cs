@@ -27,7 +27,9 @@ namespace AIToolkitDemo
                     .SetPrecondition(new TBTPreconditionNOT(new CON_HasReachedTarget()))
                     .AddChild(new NOD_TurnTo())
                     .AddChild(new NOD_MoveTo()))
-                .AddChild(new NOD_Attack());
+                .AddChild(new TBTActionSequence()
+                    .AddChild(new NOD_TurnTo())
+                    .AddChild(new NOD_Attack()));
             return _bevTreeDemo1;
         }
     }
@@ -45,7 +47,6 @@ namespace AIToolkitDemo
     class NOD_Attack : TBTActionLeaf
     {
         private const float DEFAULT_WAITING_TIME = 5f;
-        private static readonly string[] ENDING_ANIM = new string[]{"back_fall", "right_fall", "left_fall"};
         class UserContextData
         {
             internal float attackingTime;
@@ -55,7 +56,7 @@ namespace AIToolkitDemo
             AIEntityWorkingData thisData = wData.As<AIEntityWorkingData>();
             UserContextData userData = getUserContexData<UserContextData>(wData);
             userData.attackingTime = DEFAULT_WAITING_TIME;
-            thisData.entityAnimator.CrossFade("attack", 0.2f);
+            thisData.entity.PlayAnimation("Attack");
         }
         protected override int onExecute(TBTWorkingData wData)
         {
@@ -66,7 +67,9 @@ namespace AIToolkitDemo
                 userData.attackingTime -= thisData.deltaTime;
                 if (userData.attackingTime <= 0)
                 {
-                    thisData.entityAnimator.CrossFade(ENDING_ANIM[Random.Range(0, ENDING_ANIM.Length)], 0.2f);
+                    thisData.entityAnimator.SetInteger("DeadRnd", Random.Range(0, 3));
+                    thisData.entity.PlayAnimation("Dead");
+                    thisData.entity.IsDead = true;
                 }
             }
             return TBTRunningStatus.EXECUTING;
@@ -77,7 +80,14 @@ namespace AIToolkitDemo
         protected override void onEnter(TBTWorkingData wData)
         {
             AIEntityWorkingData thisData = wData.As<AIEntityWorkingData>();
-            thisData.entityAnimator.CrossFade("walk", 0.2f);
+            if(thisData.entity.IsDead)
+            {
+                thisData.entity.PlayAnimation("Reborn");
+            }
+            else
+            {
+                thisData.entity.PlayAnimation("Walk");
+            }
         }
         protected override int onExecute(TBTWorkingData wData)
         {
@@ -110,7 +120,14 @@ namespace AIToolkitDemo
         protected override void onEnter(TBTWorkingData wData)
         {
             AIEntityWorkingData thisData = wData.As<AIEntityWorkingData>();
-            thisData.entityAnimator.CrossFade("walk", 0.2f);
+            if (thisData.entity.IsDead)
+            {
+                thisData.entity.PlayAnimation("Reborn");
+            }
+            else
+            {
+                thisData.entity.PlayAnimation("Walk");
+            }
         }
         protected override int onExecute(TBTWorkingData wData)
         {

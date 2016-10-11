@@ -18,6 +18,20 @@ namespace AIToolkitDemo
         private GameObject _targetDummyObject;
 
         private float _nextTimeToGenMovingTarget;
+        private string _lastTriggeredAnimation;
+
+        private bool _isDead;
+        public bool IsDead
+        {
+            get
+            {
+                return _isDead;
+            }
+            set
+            {
+                _isDead = value;
+            }
+        }
         public AIEntity Init()
         {
             _behaviorTree = AIEntityBehaviorTreeFactory.GetBehaviorTreeDemo1();
@@ -29,9 +43,12 @@ namespace AIToolkitDemo
 
             _blackboard = new TBlackBoard();
 
-            _nextTimeToGenMovingTarget = 0;
+            _nextTimeToGenMovingTarget = 0f;
+            _lastTriggeredAnimation = string.Empty;
 
-            _targetDummyObject = GameResourceManager.instance.LoadResource("Misc/Target");
+            _isDead = false;
+
+            _targetDummyObject = GameResourceManager.instance.LoadResource("AttackTarget");
 
             return this;
         }
@@ -39,11 +56,20 @@ namespace AIToolkitDemo
         {
             return _blackboard.GetValue<T>(key, defaultValue);
         }
+        public void PlayAnimation(string name)
+        {
+            if(_lastTriggeredAnimation == name)
+            {
+                return;
+            }
+            _lastTriggeredAnimation = name;
+            _behaviorWorkingData.entityAnimator.SetTrigger(name);
+        }
         public int UpdateAI(float gameTime, float deltaTime)
         {
             if (gameTime > _nextTimeToGenMovingTarget)
             {
-                _nextRequest = new AIBehaviorRequest(gameTime, new Vector3(Random.Range(-15f, 15f), 0, Random.Range(-15f, 15f)));
+                _nextRequest = new AIBehaviorRequest(gameTime, new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f)));
                 _nextTimeToGenMovingTarget = gameTime + 20f + Random.Range(-5f, 5f);
             }
             return 0;

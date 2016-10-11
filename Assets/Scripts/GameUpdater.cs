@@ -51,7 +51,7 @@ namespace AIToolkitDemo
             //add unity
             if (GUILayout.Button("Add Entity"))
             {
-                GameObject go = GameResourceManager.instance.LoadResource("Zombie/z");
+                GameObject go = GameResourceManager.instance.LoadResource("Zombie");
                 if(go != null){
                     AIEnityManager.instance.AddEntity(go.AddComponent<AIEntity>().Init());
                 }

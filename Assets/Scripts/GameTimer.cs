@@ -29,7 +29,7 @@ namespace AIToolkitDemo
         }
         public void UpdateTime()
         {
-            deltaTime = Time.deltaTime * Time.timeScale;
+            deltaTime = Time.deltaTime;
             gameTime += deltaTime;
         }
     }
