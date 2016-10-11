@@ -9,7 +9,7 @@ public class HoverCameraController : MonoBehaviour
 
     public Transform TargetObject               = null;
     public float CurrentPanAngle                = 0f;
-    public float CurrentTiltAngle               = 45f;
+    public float CurrentTiltAngle               = 30f;
     public float CurrentDistance                = 10f;
     public float MinPanAngle                    = 45f;
     public float MaxPanAngle                    = 360f;
@@ -17,7 +17,7 @@ public class HoverCameraController : MonoBehaviour
     public float MaxTiltAngle                   = 90f;
     public float PanMovementSensitivity         = 3f;
     public float TiltMovementSensitivity        = 3f;
-    public float DistanceMovementSensitivity    = 2f;
+    public float DistanceMovementSensitivity    = 3f;
 
     private Vector3 _lookAtPosition;
     void Start()
