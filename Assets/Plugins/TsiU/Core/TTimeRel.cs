@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TsiU
+﻿namespace TsiU
 {
     public struct TTimeRel
     {
@@ -14,6 +9,10 @@ namespace TsiU
 
         public TTimeRel(float t)
         {
+            if (t < 0)
+            {
+                t = 0;
+            }
             _time = (ulong)(t * (float)S_TO_MS + 0.5f);
         }
         public TTimeRel(TTimeRel t)
@@ -27,6 +26,14 @@ namespace TsiU
         public float ToSeconds()
         {
             return _time * MS_TO_S;
+        }
+        public void SetRawMilliseconds(ulong t)
+        {
+            if (t < 0)
+            {
+                t = 0;
+            }
+            _time = t;
         }
         public static bool operator ==(TTimeRel a, TTimeRel b) { return a._time == b._time; }
         public static bool operator !=(TTimeRel a, TTimeRel b) { return a._time != b._time; }
@@ -49,17 +56,23 @@ namespace TsiU
 
         public static TTimeAbs operator +(TTimeRel a, TTimeAbs b)
         {
-            return new TTimeAbs(a._time + b.ToMilliseconds());
+            TTimeAbs timeAbs = new TTimeAbs();
+            timeAbs.SetRawMilliseconds(a._time + b.ToMilliseconds());
+            return timeAbs;
         }
         public static TTimeRel operator +(TTimeRel a, TTimeRel b)
         {
-            return new TTimeRel(a._time + b._time);
+            TTimeRel timeRel = new TTimeRel();
+            timeRel.SetRawMilliseconds(a._time + b._time);
+            return timeRel;
         }
         public static TTimeRel operator -(TTimeRel a, TTimeRel b)
         {
             if (a._time > b._time)
             {
-                return new TTimeRel(a._time - b._time);
+                TTimeRel timeRel = new TTimeRel();
+                timeRel.SetRawMilliseconds(a._time - b._time);
+                return timeRel;
             }
             return new TTimeRel(0);
         }
