@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace TsiU
 {
@@ -11,10 +8,9 @@ namespace TsiU
     };
     enum EDiscreteEventSystemState : int
     {
-        Empty       = 0,
-        NotEmpty    = 1,
+        Empty = 0,
+        NotEmpty = 1,
     }
-
     class TDiscreteEventSystem
     {
         private LinkedList<TDiscreteEvent> _events;
@@ -43,19 +39,23 @@ namespace TsiU
                 }
             }
         }
-        public EDiscreteEventSystemState Process(TTimeAbs gameTime, TAny workingData)
+        public EDiscreteEventSystemState Process(TAny workingData, ref TTimeAbs curTime)
         {
-            while(true)
+            bool hasPoped = false;
+            while (true)
             {
                 if (_events.Count == 0)
                 {
                     return EDiscreteEventSystemState.Empty;
                 }
                 TDiscreteEvent evt = _events.First.Value;
-                if (evt.TriggeredTime <= gameTime)
+                if (hasPoped == false || curTime == evt.TriggeredTime)
                 {
-                    evt.EventAction(workingData);
                     _events.RemoveFirst();
+                    curTime = evt.TriggeredTime;
+                    evt.EventAction(curTime, workingData, evt.Param);
+
+                    hasPoped = true;
                 }
                 else
                 {
@@ -64,7 +64,7 @@ namespace TsiU
             }
             return EDiscreteEventSystemState.NotEmpty;
         }
-        public bool PushEvent(TTimeAbs occurredTime, TDiscreteEvent.DiscreteEventAction action, int priority = (int)EDiscreteEventPriority.Default)
+        public bool PushEvent(TTimeAbs occurredTime, TDiscreteEvent.DiscreteEventAction action, object param = null, int priority = (int)EDiscreteEventPriority.Default)
         {
             LinkedListNode<TDiscreteEvent> result = _events.Last;
             while (result != null)
@@ -79,7 +79,8 @@ namespace TsiU
             newEvt.TriggeredTime = occurredTime;
             newEvt.EventAction = action;
             newEvt.Priority = priority;
-            if(result == null)
+            newEvt.Param = param;
+            if (result == null)
             {
                 _events.AddFirst(newEvt);
             }
@@ -89,10 +90,10 @@ namespace TsiU
             }
             return true;
         }
-        public bool PushEvent(TTimeAbs currentTime, TTimeRel timeAfter, TDiscreteEvent.DiscreteEventAction action, int priority = (int)EDiscreteEventPriority.Default)
+        public bool PushEvent(TTimeAbs currentTime, TTimeRel timeAfter, TDiscreteEvent.DiscreteEventAction action, object param = null, int priority = (int)EDiscreteEventPriority.Default)
         {
             TTimeAbs occurredTime = currentTime + timeAfter;
-            return PushEvent(occurredTime, action, priority);
+            return PushEvent(occurredTime, action, param, priority);
         }
     }
 }

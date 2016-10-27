@@ -16,10 +16,6 @@ namespace TsiU
         {
             _time = (ulong)(t * (float)S_TO_MS + 0.5f);
         }
-        public TTimeRel(ulong t)
-        {
-            _time = t;
-        }
         public TTimeRel(TTimeRel t)
         {
             _time = t._time;
@@ -38,18 +34,6 @@ namespace TsiU
         public static bool operator <(TTimeRel a, TTimeRel b) { return a._time < b._time; }
         public static bool operator >=(TTimeRel a, TTimeRel b) { return a._time >= b._time; }
         public static bool operator <=(TTimeRel a, TTimeRel b) { return a._time <= b._time; }
-        public static bool operator ==(TTimeRel a, ulong b) { return a._time == b; }
-        public static bool operator !=(TTimeRel a, ulong b) { return a._time != b; }
-        public static bool operator >(TTimeRel a, ulong b) { return a._time > b; }
-        public static bool operator <(TTimeRel a, ulong b) { return a._time < b; }
-        public static bool operator >=(TTimeRel a, ulong b) { return a._time >= b; }
-        public static bool operator <=(TTimeRel a, ulong b) { return a._time <= b; }
-        public static bool operator ==(ulong b, TTimeRel a) { return a._time == b; }
-        public static bool operator !=(ulong b, TTimeRel a) { return a._time != b; }
-        public static bool operator >(ulong b, TTimeRel a) { return a._time > b; }
-        public static bool operator <(ulong b, TTimeRel a) { return a._time < b; }
-        public static bool operator >=(ulong b, TTimeRel a) { return a._time >= b; }
-        public static bool operator <=(ulong b, TTimeRel a) { return a._time <= b; }
         public static bool operator ==(TTimeRel a, float b) { return a.ToSeconds() == b; }
         public static bool operator !=(TTimeRel a, float b) { return a.ToSeconds() != b; }
         public static bool operator >(TTimeRel a, float b) { return a.ToSeconds() > b; }

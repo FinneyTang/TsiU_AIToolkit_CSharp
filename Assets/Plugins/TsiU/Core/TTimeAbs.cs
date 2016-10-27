@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TsiU
+﻿namespace TsiU
 {
     public struct TTimeAbs
     {
@@ -14,11 +9,7 @@ namespace TsiU
 
         public TTimeAbs(float t)
         {
-            _time = (ulong)(t * (float)S_TO_MS + 0.5f);
-        }
-        public TTimeAbs(ulong t)
-        {
-            _time = t;
+            _time = (ulong)(t * S_TO_MS + 0.5f);
         }
         public TTimeAbs(TTimeAbs t)
         {
@@ -38,18 +29,6 @@ namespace TsiU
         public static bool operator <(TTimeAbs a, TTimeAbs b) { return a._time < b._time; }
         public static bool operator >=(TTimeAbs a, TTimeAbs b) { return a._time >= b._time; }
         public static bool operator <=(TTimeAbs a, TTimeAbs b) { return a._time <= b._time; }
-        public static bool operator ==(TTimeAbs a, ulong b) { return a._time == b; }
-        public static bool operator !=(TTimeAbs a, ulong b) { return a._time != b; }
-        public static bool operator >(TTimeAbs a, ulong b) { return a._time > b; }
-        public static bool operator <(TTimeAbs a, ulong b) { return a._time < b; }
-        public static bool operator >=(TTimeAbs a, ulong b) { return a._time >= b; }
-        public static bool operator <=(TTimeAbs a, ulong b) { return a._time <= b; }
-        public static bool operator ==(ulong b, TTimeAbs a) { return a._time == b; }
-        public static bool operator !=(ulong b, TTimeAbs a) { return a._time != b; }
-        public static bool operator >(ulong b, TTimeAbs a) { return a._time > b; }
-        public static bool operator <(ulong b, TTimeAbs a) { return a._time < b; }
-        public static bool operator >=(ulong b, TTimeAbs a) { return a._time >= b; }
-        public static bool operator <=(ulong b, TTimeAbs a) { return a._time <= b; }
         public static bool operator ==(TTimeAbs a, float b) { return a.ToSeconds() == b; }
         public static bool operator !=(TTimeAbs a, float b) { return a.ToSeconds() != b; }
         public static bool operator >(TTimeAbs a, float b) { return a.ToSeconds() > b; }
